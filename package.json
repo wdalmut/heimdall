@@ -25,5 +25,5 @@
   "devDependencies": {
     "jasmine-node": "^1.14.5"
   },
-  "bin": "./heimdall"
+  "bin": "./heimdall-s3"
 }

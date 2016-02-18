@@ -57,64 +57,31 @@ exports.myCli = function(options) {
       });
     },
     "revision": function(options, args) {
-      var key = args[0];
-      var params = {
-        Bucket: options.bucket,
-        Key: key,
-      };
-      if (options.version) {
-        params.VersionId = options.version;
-      }
-      this.s3.getObject(params, function(err, data) {
-        if (err) {
-          cli.fatal(err.toString());
-        }
+      require('./revision')(this.s3).get(args[0], options).then(function(data) {
         cli.output(data.Body.toString());
+      }, function(err) {
+        cli.fatal(err.toString());
       });
     },
     "history": function(options, args) {
-      var key = args[0];
-      var params = {
-        Bucket: options.bucket,
-        Prefix: key,
-      };
-      var table = this.createTable(['#', 'Rev', 'Date', 'Path']);
-      this.s3.listObjectVersions(params, function(err, data) {
-        if (err) {
-          cli.fatal(err.toString());
-        }
+      var that = this;
+      require('./history')(this.s3).get(args[0], options).then(function(data) {
+        var table = that.createTable(['#', 'Rev', 'Date', 'Path']);
         _.each(data.Versions, function(elem, index) {
           table.push([index, elem.VersionId, elem.LastModified.toString(), elem.Key]);
         });
         cli.output(table.toString());
+      }, function(err) {
+        cli.fatal(err.toString());
       });
     },
     "bifrost": function(options, args) {
-      var key = args[0];
-      var that = this;
-      var params = {
-        Bucket: options.bucket,
-        Prefix: key,
-      };
-      this.s3.listObjectVersions(params, function(err, data) {
-        if (err) {
-          cli.fatal(err.toString());
-        }
-        _.each(data.Versions, function(elem, index) {
-          var params = {
-            Bucket: options.bucket,
-            Key: elem.Key,
-            VersionId: elem.VersionId
-          };
-          that.s3.getObject(params, function(err, obj) {
-            if (err) {
-              cli.fatal(err.toString());
-            }
-            var filename = options.path + "/" + path.basename(elem.Key, path.extname(elem.Key)) + "." + index + "." + elem.VersionId + path.extname(elem.Key);
-            cli.info(filename + " written");
-            fs.writeFile(filename, obj.Body.toString());
-          });
+      require('./bifrost')(this.s3).get(args[0], options).then(function(data) {
+        _.each(data, function(elem) {
+          cli.info("Downloaded file at: " + elem.filename);
         });
+      }, function(err) {
+        cli.fatal(err.toString());
       });
     },
     "createTable": function(cols) {
