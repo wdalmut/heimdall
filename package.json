@@ -1,7 +1,7 @@
 {
-  "name": "heimdall",
+  "name": "heimdall-s3",
   "version": "0.0.1",
-  "description": "",
+  "description": "Download and check files with S3 versioning",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
