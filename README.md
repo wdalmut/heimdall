@@ -57,5 +57,17 @@ Just use the shell
     --region eu-west-1 --bucket my.bucket.org > file.txt
 ```
 
+## Download all revisions
+
+We have a bifrost!
+
+```sh
+./heimdall bifrost my/path/to/file.txt \
+    --region eu-west-1 --bucket my.bucket.org \
+    --path /tmp
+```
+
+With the `path` option you can download all revision in a specific folder,
+otherwise the current folder is used.
 
 

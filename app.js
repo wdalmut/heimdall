@@ -3,6 +3,8 @@ var _ = require('underscore');
 var AWS = require('aws-sdk');
 var Table = require('cli-table');
 var i = require('./package.json');
+var fs = require('fs');
+var path = require('path');
 
 exports.myCli = function(options) {
   return {
@@ -22,6 +24,8 @@ exports.myCli = function(options) {
         "    Show a file history (all versions)",
         "  revision PATH",
         "    Get single file revision information",
+        "  bifrost PATH",
+        "    Download all revisions of a given file",
       ];
       cli.setUsage("heimdall COMMAND [OPTIONS] [ARGS]\n\n" + commands.join("\n"));
 
@@ -34,6 +38,11 @@ exports.myCli = function(options) {
         case 'revision':
           _.extend(opts,{
             version: ["v", "The file version identification string", "string", false],
+          });
+          break;
+        case 'bifrost':
+          _.extend(opts,{
+            path: ["p", "The base folder path", "string", __dirname],
           });
           break;
       }
@@ -78,6 +87,34 @@ exports.myCli = function(options) {
           table.push([index, elem.VersionId, elem.LastModified.toString(), elem.Key]);
         });
         cli.output(table.toString());
+      });
+    },
+    "bifrost": function(options, args) {
+      var key = args[0];
+      var that = this;
+      var params = {
+        Bucket: options.bucket,
+        Prefix: key,
+      };
+      this.s3.listObjectVersions(params, function(err, data) {
+        if (err) {
+          cli.fatal(err.toString());
+        }
+        _.each(data.Versions, function(elem, index) {
+          var params = {
+            Bucket: options.bucket,
+            Key: elem.Key,
+            VersionId: elem.VersionId
+          };
+          that.s3.getObject(params, function(err, obj) {
+            if (err) {
+              cli.fatal(err.toString());
+            }
+            var filename = options.path + "/" + path.basename(elem.Key, path.extname(elem.Key)) + "." + index + "." + elem.VersionId + path.extname(elem.Key);
+            cli.info(filename + " written");
+            fs.writeFile(filename, obj.Body.toString());
+          });
+        });
       });
     },
     "createTable": function(cols) {
