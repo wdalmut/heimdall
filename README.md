@@ -1,6 +1,6 @@
 # Heimdall
 
-Create a credentials file at ~/.aws/credentials on Mac/Linux or C:\Users\USERNAME\.aws\credentials on Windows
+Create a credentials file at `~/.aws/credentials` on Mac/Linux or `C:\Users\USERNAME\.aws\credentials` on Windows
 
 ```ini
 [default]
@@ -14,13 +14,21 @@ Or directly in your console:
 ```sh
 AWS_ACCESS_KEY_ID=your_access_key \
 AWS_SECRET_ACCESS_KEY=your_secret_key \
-./heimdall COMMAND [ARGS] [OPTIONS]
+heimdall-s3 COMMAND [ARGS] [OPTIONS]
+```
+
+## Install
+
+Just use `npm`
+
+```sh
+npm install -g heimdall-s3
 ```
 
 ## History
 
 ```sh
-./heimdall history my/path/to/file.txt --region eu-west-1 --bucket my.bucket.org
+./heimdall-s3 history my/path/to/file.txt --region eu-west-1 --bucket my.bucket.org
 ```
 
 The output is something like:
@@ -36,7 +44,7 @@ The output is something like:
 You can select a particular revision
 
 ```sh
-./heimdall revision my/path/to/file.txt \
+./heimdall-s3 revision my/path/to/file.txt \
     --version d5s92Db30MRPNllR2WRspKKs12sfasSK \
     --region eu-west-1 --bucket my.bucket.org
 ```
@@ -44,7 +52,7 @@ You can select a particular revision
 Or directly the latest revision
 
 ```sh
-./heimdall revision my/path/to/file.txt \
+./heimdall-s3 revision my/path/to/file.txt \
     --region eu-west-1 --bucket my.bucket.org
 ```
 
@@ -53,7 +61,7 @@ Or directly the latest revision
 Just use the shell
 
 ```sh
-./heimdall revision my/path/to/file.txt \
+./heimdall-s3 revision my/path/to/file.txt \
     --region eu-west-1 --bucket my.bucket.org > file.txt
 ```
 
@@ -62,7 +70,7 @@ Just use the shell
 We have a bifrost!
 
 ```sh
-./heimdall bifrost my/path/to/file.txt \
+./heimdall-s3 bifrost my/path/to/file.txt \
     --region eu-west-1 --bucket my.bucket.org \
     --path /tmp
 ```

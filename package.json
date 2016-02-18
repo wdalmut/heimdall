@@ -1,6 +1,6 @@
 {
   "name": "heimdall-s3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Download and check files with S3 versioning",
   "main": "app.js",
   "scripts": {
