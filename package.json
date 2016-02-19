@@ -4,7 +4,7 @@
   "description": "Download and check files with S3 versioning",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine-node **/*_spec.js"
   },
   "keywords": [
     "s3",

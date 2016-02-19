@@ -32,7 +32,11 @@ module.exports = function(s3) {
       }).then(function(datas) {
         var filePromises = [];
         _.each(datas, function(obj, index) {
-          var filename = options.path + "/" + path.basename(filepath, path.extname(filepath)) + "." + index + "." + obj.VersionId + path.extname(filepath);
+          var filename = require('./fs/filename')().renameUsingS3Revision(_.extend(
+            options,
+            {"name": filepath, "index": index},
+            obj
+          ));
 
           filePromises.push(
             require('./dump')(fs)
