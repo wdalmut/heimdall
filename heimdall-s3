@@ -3,6 +3,4 @@
 var _ = require('underscore');
 var Cli = require('./app').myCli;
 
-var args = _.indexOf(process.argv, __filename);
-
-new Cli().run(process.argv.slice(args+1));
+new Cli().run(process.argv.slice(2));
