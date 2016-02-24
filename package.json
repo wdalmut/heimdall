@@ -1,6 +1,6 @@
 {
   "name": "heimdall-s3",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Download and check files with S3 versioning",
   "main": "app.js",
   "scripts": {
@@ -26,5 +26,9 @@
   "devDependencies": {
     "jasmine-node": "^1.14.5"
   },
-  "bin": "./heimdall-s3"
+  "bin": "./heimdall-s3",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wdalmut/heimdall-s3.git"
+  }
 }
